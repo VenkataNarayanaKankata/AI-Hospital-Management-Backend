@@ -12,8 +12,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace HospitalManagement.Api.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20260929051624_AddRoomBedModule")]
-    partial class AddRoomBedModule
+    [Migration("20260929071841_InitialCreate")]
+    partial class InitialCreate
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -75,6 +75,92 @@ namespace HospitalManagement.Api.Migrations
                     b.HasIndex("RoleId");
 
                     b.ToTable("Admins");
+                });
+
+            modelBuilder.Entity("HospitalManagement.Api.Entities.Admission", b =>
+                {
+                    b.Property<int>("AdmissionId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    MySqlPropertyBuilderExtensions.UseMySqlIdentityColumn(b.Property<int>("AdmissionId"));
+
+                    b.Property<DateTime?>("ActualDischargeDate")
+                        .HasColumnType("datetime(6)");
+
+                    b.Property<DateTime>("AdmissionDate")
+                        .HasColumnType("datetime(6)");
+
+                    b.Property<string>("AdmissionNumber")
+                        .IsRequired()
+                        .HasMaxLength(30)
+                        .HasColumnType("varchar(30)");
+
+                    b.Property<string>("AdmissionType")
+                        .IsRequired()
+                        .HasMaxLength(30)
+                        .HasColumnType("varchar(30)");
+
+                    b.Property<decimal?>("AdvanceAmount")
+                        .HasColumnType("decimal(65,30)");
+
+                    b.Property<int?>("AppointmentId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("BedId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("BranchId")
+                        .HasColumnType("int");
+
+                    b.Property<DateTime>("CreatedAt")
+                        .HasColumnType("datetime(6)");
+
+                    b.Property<int>("DoctorId")
+                        .HasColumnType("int");
+
+                    b.Property<DateTime?>("ExpectedDischargeDate")
+                        .HasColumnType("datetime(6)");
+
+                    b.Property<string>("Notes")
+                        .HasMaxLength(1000)
+                        .HasColumnType("varchar(1000)");
+
+                    b.Property<int>("PatientId")
+                        .HasColumnType("int");
+
+                    b.Property<string>("ReasonForAdmission")
+                        .HasMaxLength(1000)
+                        .HasColumnType("varchar(1000)");
+
+                    b.Property<int>("RoomId")
+                        .HasColumnType("int");
+
+                    b.Property<string>("Status")
+                        .IsRequired()
+                        .HasMaxLength(30)
+                        .HasColumnType("varchar(30)");
+
+                    b.Property<int>("WardId")
+                        .HasColumnType("int");
+
+                    b.HasKey("AdmissionId");
+
+                    b.HasIndex("AppointmentId");
+
+                    b.HasIndex("BedId");
+
+                    b.HasIndex("BranchId");
+
+                    b.HasIndex("DoctorId");
+
+                    b.HasIndex("PatientId");
+
+                    b.HasIndex("RoomId");
+
+                    b.HasIndex("WardId");
+
+                    b.ToTable("Admissions");
                 });
 
             modelBuilder.Entity("HospitalManagement.Api.Entities.Appointment", b =>
@@ -270,6 +356,69 @@ namespace HospitalManagement.Api.Migrations
                     b.ToTable("Departments");
                 });
 
+            modelBuilder.Entity("HospitalManagement.Api.Entities.Discharge", b =>
+                {
+                    b.Property<int>("DischargeId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    MySqlPropertyBuilderExtensions.UseMySqlIdentityColumn(b.Property<int>("DischargeId"));
+
+                    b.Property<int>("AdmissionId")
+                        .HasColumnType("int");
+
+                    b.Property<string>("ConditionAtDischarge")
+                        .HasMaxLength(100)
+                        .HasColumnType("varchar(100)");
+
+                    b.Property<DateTime>("CreatedAt")
+                        .HasColumnType("datetime(6)");
+
+                    b.Property<DateTime>("DischargeDate")
+                        .HasColumnType("datetime(6)");
+
+                    b.Property<string>("DischargeNumber")
+                        .IsRequired()
+                        .HasMaxLength(30)
+                        .HasColumnType("varchar(30)");
+
+                    b.Property<string>("DischargeSummary")
+                        .HasMaxLength(2000)
+                        .HasColumnType("varchar(2000)");
+
+                    b.Property<string>("DischargeType")
+                        .IsRequired()
+                        .HasMaxLength(30)
+                        .HasColumnType("varchar(30)");
+
+                    b.Property<int>("DoctorId")
+                        .HasColumnType("int");
+
+                    b.Property<string>("DoctorInstructions")
+                        .HasMaxLength(1000)
+                        .HasColumnType("varchar(1000)");
+
+                    b.Property<string>("FinalDiagnosis")
+                        .HasMaxLength(1000)
+                        .HasColumnType("varchar(1000)");
+
+                    b.Property<string>("FollowUpInstructions")
+                        .HasMaxLength(1000)
+                        .HasColumnType("varchar(1000)");
+
+                    b.Property<string>("TreatmentSummary")
+                        .HasMaxLength(2000)
+                        .HasColumnType("varchar(2000)");
+
+                    b.HasKey("DischargeId");
+
+                    b.HasIndex("AdmissionId");
+
+                    b.HasIndex("DoctorId");
+
+                    b.ToTable("Discharges");
+                });
+
             modelBuilder.Entity("HospitalManagement.Api.Entities.Doctor", b =>
                 {
                     b.Property<int>("DoctorId")
@@ -340,6 +489,87 @@ namespace HospitalManagement.Api.Migrations
                     b.HasIndex("DepartmentId");
 
                     b.ToTable("Doctors");
+                });
+
+            modelBuilder.Entity("HospitalManagement.Api.Entities.DoctorAvailability", b =>
+                {
+                    b.Property<int>("DoctorAvailabilityId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    MySqlPropertyBuilderExtensions.UseMySqlIdentityColumn(b.Property<int>("DoctorAvailabilityId"));
+
+                    b.Property<DateTime>("CreatedAt")
+                        .HasColumnType("datetime(6)");
+
+                    b.Property<int>("DayOfWeek")
+                        .HasColumnType("int");
+
+                    b.Property<int>("DoctorId")
+                        .HasColumnType("int");
+
+                    b.Property<TimeSpan>("EndTime")
+                        .HasColumnType("time(6)");
+
+                    b.Property<bool>("IsAvailable")
+                        .HasColumnType("tinyint(1)");
+
+                    b.Property<TimeSpan>("StartTime")
+                        .HasColumnType("time(6)");
+
+                    b.HasKey("DoctorAvailabilityId");
+
+                    b.HasIndex("DoctorId");
+
+                    b.ToTable("DoctorAvailabilities");
+                });
+
+            modelBuilder.Entity("HospitalManagement.Api.Entities.DoctorLeave", b =>
+                {
+                    b.Property<int>("DoctorLeaveId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    MySqlPropertyBuilderExtensions.UseMySqlIdentityColumn(b.Property<int>("DoctorLeaveId"));
+
+                    b.Property<DateTime>("CreatedAt")
+                        .HasColumnType("datetime(6)");
+
+                    b.Property<int>("DoctorId")
+                        .HasColumnType("int");
+
+                    b.Property<DateTime>("EndDate")
+                        .HasColumnType("datetime(6)");
+
+                    b.Property<TimeSpan?>("EndTime")
+                        .HasColumnType("time(6)");
+
+                    b.Property<bool>("IsApproved")
+                        .HasColumnType("tinyint(1)");
+
+                    b.Property<bool>("IsFullDay")
+                        .HasColumnType("tinyint(1)");
+
+                    b.Property<string>("LeaveType")
+                        .IsRequired()
+                        .HasMaxLength(50)
+                        .HasColumnType("varchar(50)");
+
+                    b.Property<string>("Reason")
+                        .HasMaxLength(500)
+                        .HasColumnType("varchar(500)");
+
+                    b.Property<DateTime>("StartDate")
+                        .HasColumnType("datetime(6)");
+
+                    b.Property<TimeSpan?>("StartTime")
+                        .HasColumnType("time(6)");
+
+                    b.HasKey("DoctorLeaveId");
+
+                    b.HasIndex("DoctorId");
+
+                    b.ToTable("DoctorLeaves");
                 });
 
             modelBuilder.Entity("HospitalManagement.Api.Entities.DoctorSchedule", b =>
@@ -428,6 +658,108 @@ namespace HospitalManagement.Api.Migrations
                         .IsUnique();
 
                     b.ToTable("Hospitals");
+                });
+
+            modelBuilder.Entity("HospitalManagement.Api.Entities.InsuranceClaim", b =>
+                {
+                    b.Property<int>("InsuranceClaimId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    MySqlPropertyBuilderExtensions.UseMySqlIdentityColumn(b.Property<int>("InsuranceClaimId"));
+
+                    b.Property<int>("AdmissionId")
+                        .HasColumnType("int");
+
+                    b.Property<decimal>("ApprovedAmount")
+                        .HasColumnType("decimal(65,30)");
+
+                    b.Property<DateTime?>("ApprovedDate")
+                        .HasColumnType("datetime(6)");
+
+                    b.Property<decimal>("ClaimAmount")
+                        .HasColumnType("decimal(65,30)");
+
+                    b.Property<DateTime>("ClaimDate")
+                        .HasColumnType("datetime(6)");
+
+                    b.Property<string>("ClaimNumber")
+                        .IsRequired()
+                        .HasMaxLength(50)
+                        .HasColumnType("varchar(50)");
+
+                    b.Property<DateTime>("CreatedAt")
+                        .HasColumnType("datetime(6)");
+
+                    b.Property<int>("PatientInsuranceId")
+                        .HasColumnType("int");
+
+                    b.Property<decimal>("RejectedAmount")
+                        .HasColumnType("decimal(65,30)");
+
+                    b.Property<string>("Remarks")
+                        .HasMaxLength(1000)
+                        .HasColumnType("varchar(1000)");
+
+                    b.Property<DateTime?>("SettledDate")
+                        .HasColumnType("datetime(6)");
+
+                    b.Property<string>("Status")
+                        .IsRequired()
+                        .HasMaxLength(30)
+                        .HasColumnType("varchar(30)");
+
+                    b.HasKey("InsuranceClaimId");
+
+                    b.HasIndex("AdmissionId");
+
+                    b.HasIndex("PatientInsuranceId");
+
+                    b.ToTable("InsuranceClaims");
+                });
+
+            modelBuilder.Entity("HospitalManagement.Api.Entities.InsuranceProvider", b =>
+                {
+                    b.Property<int>("InsuranceProviderId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    MySqlPropertyBuilderExtensions.UseMySqlIdentityColumn(b.Property<int>("InsuranceProviderId"));
+
+                    b.Property<string>("Address")
+                        .HasMaxLength(250)
+                        .HasColumnType("varchar(250)");
+
+                    b.Property<string>("ContactNumber")
+                        .HasMaxLength(20)
+                        .HasColumnType("varchar(20)");
+
+                    b.Property<string>("ContactPerson")
+                        .HasMaxLength(100)
+                        .HasColumnType("varchar(100)");
+
+                    b.Property<DateTime>("CreatedAt")
+                        .HasColumnType("datetime(6)");
+
+                    b.Property<string>("Email")
+                        .HasMaxLength(150)
+                        .HasColumnType("varchar(150)");
+
+                    b.Property<bool>("IsActive")
+                        .HasColumnType("tinyint(1)");
+
+                    b.Property<string>("ProviderCode")
+                        .HasMaxLength(50)
+                        .HasColumnType("varchar(50)");
+
+                    b.Property<string>("ProviderName")
+                        .IsRequired()
+                        .HasMaxLength(150)
+                        .HasColumnType("varchar(150)");
+
+                    b.HasKey("InsuranceProviderId");
+
+                    b.ToTable("InsuranceProviders");
                 });
 
             modelBuilder.Entity("HospitalManagement.Api.Entities.Invoice", b =>
@@ -1042,6 +1374,62 @@ namespace HospitalManagement.Api.Migrations
                     b.ToTable("Patients");
                 });
 
+            modelBuilder.Entity("HospitalManagement.Api.Entities.PatientInsurance", b =>
+                {
+                    b.Property<int>("PatientInsuranceId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    MySqlPropertyBuilderExtensions.UseMySqlIdentityColumn(b.Property<int>("PatientInsuranceId"));
+
+                    b.Property<decimal>("AvailableCoverage")
+                        .HasColumnType("decimal(65,30)");
+
+                    b.Property<DateTime>("CreatedAt")
+                        .HasColumnType("datetime(6)");
+
+                    b.Property<int>("InsuranceProviderId")
+                        .HasColumnType("int");
+
+                    b.Property<string>("MemberId")
+                        .HasMaxLength(50)
+                        .HasColumnType("varchar(50)");
+
+                    b.Property<int>("PatientId")
+                        .HasColumnType("int");
+
+                    b.Property<DateTime>("PolicyEndDate")
+                        .HasColumnType("datetime(6)");
+
+                    b.Property<string>("PolicyHolderName")
+                        .HasMaxLength(100)
+                        .HasColumnType("varchar(100)");
+
+                    b.Property<string>("PolicyNumber")
+                        .IsRequired()
+                        .HasMaxLength(50)
+                        .HasColumnType("varchar(50)");
+
+                    b.Property<DateTime>("PolicyStartDate")
+                        .HasColumnType("datetime(6)");
+
+                    b.Property<string>("Status")
+                        .IsRequired()
+                        .HasMaxLength(30)
+                        .HasColumnType("varchar(30)");
+
+                    b.Property<decimal>("SumInsured")
+                        .HasColumnType("decimal(65,30)");
+
+                    b.HasKey("PatientInsuranceId");
+
+                    b.HasIndex("InsuranceProviderId");
+
+                    b.HasIndex("PatientId");
+
+                    b.ToTable("PatientInsurances");
+                });
+
             modelBuilder.Entity("HospitalManagement.Api.Entities.Payment", b =>
                 {
                     b.Property<int>("PaymentId")
@@ -1471,6 +1859,64 @@ namespace HospitalManagement.Api.Migrations
                     b.Navigation("Role");
                 });
 
+            modelBuilder.Entity("HospitalManagement.Api.Entities.Admission", b =>
+                {
+                    b.HasOne("HospitalManagement.Api.Entities.Appointment", "Appointment")
+                        .WithMany()
+                        .HasForeignKey("AppointmentId")
+                        .OnDelete(DeleteBehavior.Restrict);
+
+                    b.HasOne("HospitalManagement.Api.Entities.Bed", "Bed")
+                        .WithMany()
+                        .HasForeignKey("BedId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.HasOne("HospitalManagement.Api.Entities.Branch", "Branch")
+                        .WithMany()
+                        .HasForeignKey("BranchId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.HasOne("HospitalManagement.Api.Entities.Doctor", "Doctor")
+                        .WithMany()
+                        .HasForeignKey("DoctorId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.HasOne("HospitalManagement.Api.Entities.Patient", "Patient")
+                        .WithMany()
+                        .HasForeignKey("PatientId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.HasOne("HospitalManagement.Api.Entities.Room", "Room")
+                        .WithMany()
+                        .HasForeignKey("RoomId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.HasOne("HospitalManagement.Api.Entities.Ward", "Ward")
+                        .WithMany()
+                        .HasForeignKey("WardId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.Navigation("Appointment");
+
+                    b.Navigation("Bed");
+
+                    b.Navigation("Branch");
+
+                    b.Navigation("Doctor");
+
+                    b.Navigation("Patient");
+
+                    b.Navigation("Room");
+
+                    b.Navigation("Ward");
+                });
+
             modelBuilder.Entity("HospitalManagement.Api.Entities.Appointment", b =>
                 {
                     b.HasOne("HospitalManagement.Api.Entities.Branch", "Branch")
@@ -1547,6 +1993,25 @@ namespace HospitalManagement.Api.Migrations
                     b.Navigation("Branch");
                 });
 
+            modelBuilder.Entity("HospitalManagement.Api.Entities.Discharge", b =>
+                {
+                    b.HasOne("HospitalManagement.Api.Entities.Admission", "Admission")
+                        .WithMany()
+                        .HasForeignKey("AdmissionId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.HasOne("HospitalManagement.Api.Entities.Doctor", "Doctor")
+                        .WithMany()
+                        .HasForeignKey("DoctorId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.Navigation("Admission");
+
+                    b.Navigation("Doctor");
+                });
+
             modelBuilder.Entity("HospitalManagement.Api.Entities.Doctor", b =>
                 {
                     b.HasOne("HospitalManagement.Api.Entities.Branch", "Branch")
@@ -1566,6 +2031,28 @@ namespace HospitalManagement.Api.Migrations
                     b.Navigation("Department");
                 });
 
+            modelBuilder.Entity("HospitalManagement.Api.Entities.DoctorAvailability", b =>
+                {
+                    b.HasOne("HospitalManagement.Api.Entities.Doctor", "Doctor")
+                        .WithMany("DoctorAvailabilities")
+                        .HasForeignKey("DoctorId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.Navigation("Doctor");
+                });
+
+            modelBuilder.Entity("HospitalManagement.Api.Entities.DoctorLeave", b =>
+                {
+                    b.HasOne("HospitalManagement.Api.Entities.Doctor", "Doctor")
+                        .WithMany("DoctorLeaves")
+                        .HasForeignKey("DoctorId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.Navigation("Doctor");
+                });
+
             modelBuilder.Entity("HospitalManagement.Api.Entities.DoctorSchedule", b =>
                 {
                     b.HasOne("HospitalManagement.Api.Entities.Branch", "Branch")
@@ -1583,6 +2070,25 @@ namespace HospitalManagement.Api.Migrations
                     b.Navigation("Branch");
 
                     b.Navigation("Doctor");
+                });
+
+            modelBuilder.Entity("HospitalManagement.Api.Entities.InsuranceClaim", b =>
+                {
+                    b.HasOne("HospitalManagement.Api.Entities.Admission", "Admission")
+                        .WithMany()
+                        .HasForeignKey("AdmissionId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.HasOne("HospitalManagement.Api.Entities.PatientInsurance", "PatientInsurance")
+                        .WithMany("InsuranceClaims")
+                        .HasForeignKey("PatientInsuranceId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.Navigation("Admission");
+
+                    b.Navigation("PatientInsurance");
                 });
 
             modelBuilder.Entity("HospitalManagement.Api.Entities.Invoice", b =>
@@ -1769,6 +2275,25 @@ namespace HospitalManagement.Api.Migrations
                     b.Navigation("Branch");
                 });
 
+            modelBuilder.Entity("HospitalManagement.Api.Entities.PatientInsurance", b =>
+                {
+                    b.HasOne("HospitalManagement.Api.Entities.InsuranceProvider", "InsuranceProvider")
+                        .WithMany("PatientInsurances")
+                        .HasForeignKey("InsuranceProviderId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.HasOne("HospitalManagement.Api.Entities.Patient", "Patient")
+                        .WithMany()
+                        .HasForeignKey("PatientId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.Navigation("InsuranceProvider");
+
+                    b.Navigation("Patient");
+                });
+
             modelBuilder.Entity("HospitalManagement.Api.Entities.Payment", b =>
                 {
                     b.HasOne("HospitalManagement.Api.Entities.Invoice", "Invoice")
@@ -1949,12 +2474,21 @@ namespace HospitalManagement.Api.Migrations
                 {
                     b.Navigation("Appointments");
 
+                    b.Navigation("DoctorAvailabilities");
+
+                    b.Navigation("DoctorLeaves");
+
                     b.Navigation("DoctorSchedules");
                 });
 
             modelBuilder.Entity("HospitalManagement.Api.Entities.Hospital", b =>
                 {
                     b.Navigation("Branches");
+                });
+
+            modelBuilder.Entity("HospitalManagement.Api.Entities.InsuranceProvider", b =>
+                {
+                    b.Navigation("PatientInsurances");
                 });
 
             modelBuilder.Entity("HospitalManagement.Api.Entities.Invoice", b =>
@@ -1996,6 +2530,11 @@ namespace HospitalManagement.Api.Migrations
                     b.Navigation("Appointments");
 
                     b.Navigation("PharmacySales");
+                });
+
+            modelBuilder.Entity("HospitalManagement.Api.Entities.PatientInsurance", b =>
+                {
+                    b.Navigation("InsuranceClaims");
                 });
 
             modelBuilder.Entity("HospitalManagement.Api.Entities.PharmacySale", b =>
