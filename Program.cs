@@ -14,7 +14,10 @@ builder.Services.AddCors(options =>
     options.AddPolicy("AngularClient", policy =>
     {
         policy
-            .WithOrigins("http://localhost:4200")
+            .WithOrigins(
+                "http://localhost:4200",
+                "https://id-preview--a888dbed-7a53-4d36-9375-6176c5261e82.lovable.app"
+            )
             .AllowAnyHeader()
             .AllowAnyMethod();
     });
